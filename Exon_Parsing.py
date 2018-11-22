@@ -1,6 +1,16 @@
 import xml.etree.ElementTree as ET
 import csv
 import argparse
+import sys
+
+		
+def FileCheck(fn):
+	try:
+		open(fn, "r")
+	except IOError:
+		print("Error: File does not appear to exist.")
+		sys.exit()
+     
 
 def get_arguments():
 
@@ -9,6 +19,7 @@ def get_arguments():
 	parser.add_argument("--file", help="path to xml file")
 	args = parser.parse_args()
 	filepath = args.file
+	
 	print(filepath)
 	return filepath
 	
@@ -17,6 +28,8 @@ def lrg2bed(lrg_xml):
 
 	'''takes lrg.xml file as argument and outputs bedfile with exon_number, start and stop coordinates'''
 
+	FileCheck(lrg_xml)
+	
 	#Read in XML file.
 	file = lrg_xml
 	tree = ET.parse(file)
