@@ -2,6 +2,7 @@ import xml.etree.ElementTree as ET
 import csv
 import argparse
 import sys
+import wget
 
 		
 def FileCheck(fn):
@@ -11,10 +12,7 @@ def FileCheck(fn):
 		print("Error: File does not appear to exist")
 		return "Error: File does not appear to exist."
 		#sys.exit()
-     
-	 
-	 
-	 
+		
 	 #this is a test comment
 	 
 
@@ -22,21 +20,23 @@ def get_arguments():
 
 	#Retrieve command line arguments
 	parser = argparse.ArgumentParser()
-	parser.add_argument("--file", help="path to xml file")
+	parser.add_argument("--lrg_no", help="LRG number")
 	args = parser.parse_args()
-	filepath = args.file
-	print(filepath)
-	return filepath
+	lrg_no = args.lrg_no
+	print(lrg_no)
+	return lrg_no
 	
 
-def lrg2bed(lrg_xml):
+def lrg2bed(lrg_no):
 
-	'''takes lrg.xml file as argument and outputs bedfile with exon_number, start and stop coordinates'''
+	'''takes lrg number as argument and outputs bedfile with chromosome number, exon_number, start and stop coordinates'''
 
-	FileCheck(lrg_xml)
+	#FileCheck(lrg_xml)
 	
+	url = "http://ftp.ebi.ac.uk/pub/databases/lrgex/LRG_" + lrg_no + ".xml"
+	print(url)
 	#Read in XML file.
-	file = lrg_xml
+	file = wget.download(url)
 	tree = ET.parse(file)
 	root = tree.getroot()
 	 
@@ -86,5 +86,5 @@ def lrg2bed(lrg_xml):
 	return filename
 
 if __name__ == '__main__':
-	filepath = get_arguments()
-	lrg2bed(filepath)
+	lrg_no = get_arguments()
+	lrg2bed(lrg_no)
