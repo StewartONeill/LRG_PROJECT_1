@@ -45,14 +45,26 @@ def lrg2bed(lrg_xml):
 	print("LRG_ID is...", lrg_id)
 
 	for exon in root.findall("./fixed_annotation/transcript[@name='t1']/exon"):
-		exon_number = (exon.get("label"))
 		coords = exon.find("coordinates")
+		
+		exon_number = (exon.get("label"))
 		coords_start = (coords.get("start"))
 		coords_end = (coords.get("end"))
+		
 		list = [exon_number, coords_start, coords_end]
+		for item in list:
+			if item == "":
+				print('Error: attribute empty')
+				sys.exit()
+			elif item == None:
+				print('Error: attribute missing')
+				sys.exit()
+			else:
+				pass
+				
 		bed_array.append(list)
 	print(bed_array)
-
+	
 	filename = lrg_id + ".bed"
 	print(filename)
 
