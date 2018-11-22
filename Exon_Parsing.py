@@ -31,7 +31,7 @@ def lrg2bed(lrg_xml):
 	lrg_id =root.find("./fixed_annotation/id").text
 	print("LRG_ID is...", lrg_id)
 
-	for exon in root.findall("./fixed_annotation/transcript/exon"):
+	for exon in root.findall("./fixed_annotation/transcript[@name='t1']/exon"):
 		exon_number = (exon.get("label"))
 		coords = exon.find("coordinates")
 		coords_start = (coords.get("start"))
