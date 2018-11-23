@@ -35,8 +35,12 @@ def lrg2bed(lrg_no):
 	
 	url = "http://ftp.ebi.ac.uk/pub/databases/lrgex/LRG_" + lrg_no + ".xml"
 	print(url)
-	#Read in XML file.
-	file = wget.download(url)
+	#Read in XML file
+	try:
+		file = wget.download(url)
+	except:
+		print("HTTPError: URL does not exist.")
+		return
 	tree = ET.parse(file)
 	root = tree.getroot()
 	 
@@ -83,6 +87,7 @@ def lrg2bed(lrg_no):
 		writer = csv.writer(tsvFile, delimiter='\t')
 		writer.writerows(bed_array)
 	tsvFile.close()
+	print("-------File " + filename + " has been created-------")
 	return filename
 
 if __name__ == '__main__':
