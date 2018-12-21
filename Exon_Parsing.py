@@ -60,8 +60,8 @@ def lrg2bed(lrg_no=None, filepath=None):
 
 	# Checks that only one of the two possible arguments has been provided
 	if filepath != None and lrg_no != None:
+		print("\nPlease provide either a filepath or an lrg number, not both.")
 		return
-		print("Please provide either a filepath or an lrg number not both")
 
 	#Read in XML file
 	tree = ET.parse(file)
