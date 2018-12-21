@@ -51,10 +51,12 @@ def lrg2bed(lrg_no=None, filepath=None):
 			print("\nAn existing local XML file has been found for this LRG number.\nThis local file will be used to generate the BED file")
 			file = file_name
 
-	# If a filepath has been given checks whether the file exists 
+	# If a filepath has been given, checks whether the file exists 
 	if filepath != None and lrg_no == None:				
-		file = filepath
-		FileCheck(file)
+		if FileCheck(filepath) is OSError:
+			return
+		else:
+			file = filepath
 
 	# Checks that only one of the two possible arguments has been provided
 	if filepath != None and lrg_no != None:
