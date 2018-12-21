@@ -70,52 +70,52 @@ def lrg2bed(lrg_no=None, filepath=None):
 	#Finds all exon elements within the fixed_annotation/transcript element. 
 	#Prints the exon attribute
 	#Prints the genomic start and end coords on this exon
-
+	
+	print("Converting XML file to BED file.\n")
 	bed_array = [['chromosome_number', 'exon_start', 'exon_end', 'exon_number']]
-
 	symbol_element = root.find("./updatable_annotation/annotation_set[@type='ncbi']/features/gene/symbol")
 	gene_name = symbol_element.get("name")
 	mapping_element = root.find("updatable_annotation/annotation_set[@type='lrg']/mapping")
 	chr_number = mapping_element.get("other_name")
-	
 	print("Gene Name is...", gene_name)
 
 	for exon in root.findall("./fixed_annotation/transcript[@name='t1']/exon"):
 		coords = exon.find("coordinates")
-		
 		exon_number = (exon.get("label"))
 		coords_start = (coords.get("start"))
 		coords_end = (coords.get("end"))
-		
 		list = [chr_number, coords_start, coords_end, exon_number ]
 		for item in list:
 			if item == "":
-				print("Error: attribute empty")
+				print("\nError: attribute empty")
 				return 'Error: attribute empty'
 				#sys.exit()
 			elif item == None:
-				print("Error: attribute missing")
+				print("\nError: attribute missing")
 				return 'Error: attribute missing'
 				#sys.exit()
 			else:
 				pass
-				
 		bed_array.append(list)
-	print(bed_array)
 	
 	filename = gene_name + ".bed"
-	print("THE FILENAME IS..." + filename)
+	print("\nTHE FILENAME IS..." + filename)
 
 	with open(filename, 'w') as tsvFile:
 		writer = csv.writer(tsvFile, delimiter='\t')
 		writer.writerows(bed_array)
 	tsvFile.close()
-	print("-------File " + filename + " has been created-------")
+	print("\n-------File " + filename + " has been created-------")
+	df = pd.read_csv(filename, sep='\t')
+	print(df)
 	return filename
 
 if __name__ == '__main__':
+	print("\nRetrieving arguments...\n")
 	args = get_arguments()
-	print(args)
+	print("LRG Number =", args.lrg_no)
+	print("Filepath =", args.file, "\n")	print(args)
+	
 	if args.lrg_no != None:
 		lrg2bed(lrg_no=args.lrg_no)
 	if args.file != None:
