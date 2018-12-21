@@ -3,16 +3,17 @@ import csv
 import argparse
 import sys
 import wget
-
-		
+import pandas as pd
+	
 def FileCheck(fn):
-
-	'''Checks whether the file exists'''
-
+	'''
+	Checks whether the file exists
+	'''
+	
 	try:
 		open(fn, "r")
 	except OSError:
-		print("Error: File does not appear to exist")
+		print("\nNOTE: File", fn, "does not appear to exist")
 		return OSError
 		#sys.exit()
 
