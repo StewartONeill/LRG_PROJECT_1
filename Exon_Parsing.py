@@ -2,36 +2,61 @@ import xml.etree.ElementTree as ET
 import csv
 import argparse
 import sys
+import wget
 
 		
 def FileCheck(fn):
+
+	'''Checks whether the file exists'''
+
 	try:
 		open(fn, "r")
-	except IOError:
+	except OSError:
 		print("Error: File does not appear to exist")
-		return "Error: File does not appear to exist."
+		return OSError
 		#sys.exit()
-     
 
 def get_arguments():
 
-	#Retrieve command line arguments
+	'''Parses command line arguments'''
+
 	parser = argparse.ArgumentParser()
-	parser.add_argument("--file", help="path to xml file")
+	group = parser.add_mutually_exclusive_group(required=True)
+	group.add_argument("--lrg_no", help="LRG number")
+	group.add_argument("--file", help="path to xml file")
 	args = parser.parse_args()
-	filepath = args.file
-	print(filepath)
-	return filepath
-	
+	return args
 
-def lrg2bed(lrg_xml):
+def lrg2bed(lrg_no=None, filepath=None):
 
-	'''takes lrg.xml file as argument and outputs bedfile with exon_number, start and stop coordinates'''
+	'''Takes either an lrg number or a filepath and outputs bedfile with chromosome number, exon_number, start and stop coordinates'''
 
-	FileCheck(lrg_xml)
-	
-	#Read in XML file.
-	file = lrg_xml
+	# If an lrg number has been given checks whether the required file exists locally and downloads it if not
+	if lrg_no != None and filepath == None:
+		if FileCheck("LRG_" + lrg_no + ".xml" ) is OSError:
+			url = "http://ftp.ebi.ac.uk/pub/databases/lrgex/LRG_" + lrg_no + ".xml"
+			print(url)
+			try:
+				file = wget.download(url)
+			except:
+				print("HTTPError: URL does not exist.")
+				return 
+
+		if FileCheck("LRG_" + lrg_no + ".xml" ) is None:
+			file = "LRG_" + lrg_no + ".xml"
+			print("An existing local XML file has been found for this LRG number.\nThis local file will be used to generate the BED file")
+
+	# If a filepath has been given checks whether the file exists 
+	if filepath != None and lrg_no == None:				
+		file = filepath
+		FileCheck(file)
+
+	# Checks that only one of the two possible arguments has been provided
+	if filepath != None and lrg_no != None:
+		return
+		print("Please provide either a filepath or an lrg number not both")
+
+	#Read in XML file
 	tree = ET.parse(file)
 	root = tree.getroot()
 	 
@@ -78,8 +103,13 @@ def lrg2bed(lrg_xml):
 		writer = csv.writer(tsvFile, delimiter='\t')
 		writer.writerows(bed_array)
 	tsvFile.close()
+	print("-------File " + filename + " has been created-------")
 	return filename
 
 if __name__ == '__main__':
-	filepath = get_arguments()
-	lrg2bed(filepath)
+	args = get_arguments()
+	print(args)
+	if args.lrg_no != None:
+		lrg2bed(lrg_no=args.lrg_no)
+	if args.file != None:
+		lrg2bed(filepath=args.file)
