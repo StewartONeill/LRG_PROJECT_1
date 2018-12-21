@@ -39,3 +39,7 @@ helen.warren@postgrad.manchester.ac.uk
 CONTRIBUTIONS
 
 Contributions to the project can be made via GitHub by cloning the following repository: https://github.com/StewartONeill/LRG_PROJECT_1.git
+
+ROADMAP 
+
+The next version of this tool will include the capability of converting from LRG coordinates to GRCh37 or GRCh38 coordinates.
