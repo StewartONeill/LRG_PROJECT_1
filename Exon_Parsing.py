@@ -34,18 +34,22 @@ def lrg2bed(lrg_no=None, filepath=None):
 
 	# If an lrg number has been given checks whether the required file exists locally and downloads it if not
 	if lrg_no != None and filepath == None:
-		if FileCheck("LRG_" + lrg_no + ".xml" ) is OSError:
-			url = "http://ftp.ebi.ac.uk/pub/databases/lrgex/LRG_" + lrg_no + ".xml"
+		file_name = "LRG_" + lrg_no + ".xml"
+		if FileCheck(file_name) is OSError:
+			print("\nAttempting to download", file_name, "from url...")
+			url = "http://ftp.ebi.ac.uk/pub/databases/lrgex/" + file_name
 			print(url)
 			try:
 				file = wget.download(url)
+				print("\nSuccessfully downloaded...", file)
 			except:
-				print("HTTPError: URL does not exist.")
+				print("\nHTTPError: URL does not exist.")
 				return 
-
-		if FileCheck("LRG_" + lrg_no + ".xml" ) is None:
-			file = "LRG_" + lrg_no + ".xml"
-			print("An existing local XML file has been found for this LRG number.\nThis local file will be used to generate the BED file")
+				
+		elif FileCheck(file_name) is None:
+			#file = "LRG_" + lrg_no + ".xml"
+			print("\nAn existing local XML file has been found for this LRG number.\nThis local file will be used to generate the BED file")
+			file = file_name
 
 	# If a filepath has been given checks whether the file exists 
 	if filepath != None and lrg_no == None:				
