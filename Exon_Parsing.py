@@ -15,7 +15,7 @@ def FileCheck(fn):
 	except OSError:
 		print("\nNOTE: File", fn, "does not appear to exist")
 		return OSError
-		#sys.exit()
+		
 
 def get_arguments():
 
@@ -47,7 +47,6 @@ def lrg2bed(lrg_no=None, filepath=None):
 				return 
 				
 		elif FileCheck(file_name) is None:
-			#file = "LRG_" + lrg_no + ".xml"
 			print("\nAn existing local XML file has been found for this LRG number.\nThis local file will be used to generate the BED file")
 			file = file_name
 
@@ -89,11 +88,9 @@ def lrg2bed(lrg_no=None, filepath=None):
 			if item == "":
 				print("\nError: attribute empty")
 				return 'Error: attribute empty'
-				#sys.exit()
 			elif item == None:
 				print("\nError: attribute missing")
 				return 'Error: attribute missing'
-				#sys.exit()
 			else:
 				pass
 		bed_array.append(list)
