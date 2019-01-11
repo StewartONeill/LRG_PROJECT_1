@@ -13,7 +13,11 @@ This tool enables the parsing of LRG (Locus Reference Genome) records into BED f
 INSTALLATION
 
 This tool requires Python (tested on version 2.7 and 3.5). Python can be downloaded here: https://www.python.org/downloads/
-It is also necessary to install the wget Python module using pip. 
+
+The following Python modules are also required:
+- wget version 3.2
+- pandas version 0.23.4
+- pytest version 3.8.0 (required to run test suite)
 
 USER GUIDE
 
