@@ -5,7 +5,7 @@ import wget
 import pandas as pd
 	
 def FileCheck(fn):
-	'''Checks whether the file exists'''
+	'''Check whether the file exists'''
 	
 	try:
 		open(fn, "r")
@@ -16,7 +16,7 @@ def FileCheck(fn):
 
 def get_arguments():
 
-	'''Parses command line arguments'''
+	'''Parse command line arguments'''
 
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--outpath", help="outpath for BED file", default="")
@@ -28,9 +28,14 @@ def get_arguments():
 
 def lrg2bed(outpath, lrg_no=None, filepath=None):
 
-	'''Takes either an lrg number or a filepath and outputs bedfile with chromosome number, exon_number, start and stop coordinates'''
+	'''Take an lrg number or a filepath and output bedfile. 
 
-	# If an lrg number has been given checks whether the required file exists locally and downloads it if not
+		The outputted bedfile has the following columns: chromosome number, 
+		exon_number, start and stop coordinates.
+	'''
+
+	# If an lrg no. has been given checks whether the file exists locally
+	# Downloads the file if no local copy is found
 	if lrg_no != None and filepath == None:
 		file_name = "LRG_" + str(lrg_no) + ".xml"
 		if FileCheck(file_name) is OSError:
@@ -45,7 +50,8 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 				return 
 				
 		elif FileCheck(file_name) is None:
-			print("\nAn existing local XML file has been found for this LRG number.\nThis local file will be used to generate the BED file")
+			print("An existing local XML file has been found for this LRG no." 
+				  "\nThis local file will be used to generate the BED file")
 			file = file_name
 
 	# If a filepath has been given, checks whether the file exists 
@@ -58,7 +64,6 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 	# Checks that only one of the two possible arguments has been provided
 	if filepath != None and lrg_no != None:
 		msg = 'Please provide either a filepath or an lrg number, not both.'
-		# print("\nPlease provide either a filepath or an lrg number, not both.")
 		print(msg)
 		return msg
 
@@ -73,9 +78,11 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 	
 	print("Converting XML file to BED file.\n")
 	bed_array = [['chromosome_number', 'exon_start', 'exon_end', 'exon_number']]
-	symbol_element = root.find("./updatable_annotation/annotation_set[@type='ncbi']/features/gene/symbol")
+	symbol_element = root.find("./updatable_annotation/annotation_set"
+							   "[@type='ncbi']/features/gene/symbol")
 	gene_name = symbol_element.get("name")
-	mapping_element = root.find("updatable_annotation/annotation_set[@type='lrg']/mapping")
+	mapping_element = root.find("updatable_annotation/annotation_set"
+								"[@type='lrg']/mapping")
 	chr_number = mapping_element.get("other_name")
 	print("Gene Name is...", gene_name)
 
@@ -112,7 +119,7 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 	print(df.to_string(index=False))
 
 
-	return (filename, df)
+	return filename
 
 if __name__ == '__main__':
 
