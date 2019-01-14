@@ -10,7 +10,8 @@ def test_notafile():
 
 # tests if giving both lrg_no and filepath to lrg2bed generates expected error
 def test_input():
-	assert lrg2bed(lrg_no=True, filepath=True, outpath=True) == 'Please provide either a filepath or an lrg number, not both.'
+	msg = 'Please provide either a filepath or an lrg number, not both.'
+	assert lrg2bed(lrg_no=True, filepath=True, outpath=True) == msg
 
 # creates instance of lrg2bed output to use in subsequent tests	
 @pytest.fixture
@@ -28,9 +29,10 @@ def test_save(test_file):
 
 # tests whether BED file has the correct headers
 def test_columns(test_file):
-	assert list(test_file.columns.values) == ['chromosome_number', 'exon_start', 'exon_end', 'exon_number']
+	cols = ['chromosome_number', 'exon_start', 'exon_end', 'exon_number']
+	assert list(test_file.columns.values) == cols
 
-# tests whether BED file contains correct datatype
+# tests whether BED file contains correct datatype 
 def test_dtype(test_file):
 	for column in list(test_file.columns.values):
 		assert test_file[column].dtype == int
