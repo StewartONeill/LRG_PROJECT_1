@@ -108,7 +108,7 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 	print("\n-------File " + filename + " has been created-------")
 
 	# load the BEDfile into pandas df and print to terminal
-	df = pd.read_csv(filename, sep='\t')
+	df = pd.read_csv(filepath, sep='\t')
 	print(df.to_string(index=False))
 
 
