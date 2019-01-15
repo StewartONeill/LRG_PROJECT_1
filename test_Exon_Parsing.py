@@ -43,4 +43,8 @@ def test_dtype(test_file):
 
 # tests whether BED file outputs the correct chromosome number 
 def test_chr(test_file):
-	assert test_file.iloc[2,0] == 9
+	assert test_file.iloc[0,0] == 9
+
+#tests whether BED file outputs the correct exon start and end
+def test_exon(test_file):
+	assert test_file.iloc[0,1] == 5001 and test_file.iloc[0,2] == 5095
