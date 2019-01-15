@@ -39,7 +39,7 @@ def test_columns(test_file):
 # tests whether BED file contains correct datatype 
 def test_dtype(test_file):
 	for column in list(test_file.columns.values):
-		assert test_file[column].dtype == int
+		assert test_file[column].dtype == "int64"
 
 # tests whether BED file outputs the correct chromosome number 
 def test_chr(test_file):
