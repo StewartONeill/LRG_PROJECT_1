@@ -119,7 +119,7 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 	print(df.to_string(index=False))
 
 
-	return filename
+	return (filename, gene_name)
 
 if __name__ == '__main__':
 
@@ -132,3 +132,4 @@ if __name__ == '__main__':
 		lrg2bed(outpath=args.outpath, lrg_no=args.lrg_no)
 	if args.file != None:
 		lrg2bed(outpath=args.outpath, filepath=args.file)
+
