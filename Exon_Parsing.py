@@ -118,7 +118,7 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 	print(df.to_string(index=False))
 
 
-	return filename
+	return(filename, gene_name)
 
 if __name__ == '__main__':
 
