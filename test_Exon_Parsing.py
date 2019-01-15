@@ -13,6 +13,10 @@ def test_input():
 	msg = 'Please provide either a filepath or an lrg number, not both.'
 	assert lrg2bed(lrg_no=True, filepath=True, outpath=True) == msg
 
+#tests if the correct gene name is derived when 'lrg_no=5' is used as input
+def test_genename():
+        assert lrg2bed(outpath="./", lrg_no="5", filepath=None)[1]=="C1orf50"
+
 # creates instance of lrg2bed output to use in subsequent tests	
 @pytest.fixture
 def test_file():
@@ -36,7 +40,3 @@ def test_columns(test_file):
 def test_dtype(test_file):
 	for column in list(test_file.columns.values):
 		assert test_file[column].dtype == int
-
-#tests if the correct gene name is derived when 'lrg_no=5' is used as input
-def test_genename():
-	assert lrg2bed(outpath="./", lrg_no="5", filepath=None)[1]=="C1orf50"
