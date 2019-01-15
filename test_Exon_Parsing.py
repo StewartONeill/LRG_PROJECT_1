@@ -16,7 +16,7 @@ def test_input():
 #tests if the correct gene name is derived when 'lrg_no=5' is used as input
 def test_genename():
         assert lrg2bed(outpath="./", lrg_no="5", filepath=None)[1]=="C1orf50"
-
+    
 # creates instance of lrg2bed output to use in subsequent tests	
 @pytest.fixture
 def test_file():
@@ -28,7 +28,7 @@ def test_file():
 	return pd.read_csv("test/C5.bed", sep='\t')
 
 # tests whether BED file is created
-def test_save(test_file):
+def test_save():
 	assert os.path.isfile("test/C5.bed")
 
 # tests whether BED file has the correct headers
@@ -48,3 +48,10 @@ def test_chr(test_file):
 #tests whether BED file outputs the correct exon start and end location for exon number 1
 def test_exon(test_file):
 	assert test_file.iloc[0,1] == 5001 and test_file.iloc[0,2] == 5095
+
+	
+
+
+
+     
+

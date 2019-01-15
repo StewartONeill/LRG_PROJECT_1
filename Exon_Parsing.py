@@ -6,7 +6,6 @@ import pandas as pd
 
 def FileCheck(fn):
 	'''Check whether the file exists'''
-
 	try:
 		open(fn, "r")
 	except OSError :
@@ -29,6 +28,7 @@ def get_arguments():
 def lrg2bed(outpath, lrg_no=None, filepath=None):
 
 	'''Take an lrg number or a filepath and output bedfile. 
+
 		The outputted bedfile has the following columns: chromosome number, 
 		exon_number, start and stop coordinates.
 	'''
@@ -117,8 +117,8 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 	df = pd.read_csv(filepath, sep='\t')
 	print(df.to_string(index=False))
 
-
 	return(filename, gene_name)
+
 
 if __name__ == '__main__':
 
@@ -131,3 +131,4 @@ if __name__ == '__main__':
 		lrg2bed(outpath=args.outpath, lrg_no=args.lrg_no)
 	if args.file != None:
 		lrg2bed(outpath=args.outpath, filepath=args.file)
+
