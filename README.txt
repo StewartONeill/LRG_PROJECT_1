@@ -13,7 +13,11 @@ This tool enables the parsing of LRG (Locus Reference Genome) records into BED f
 INSTALLATION
 
 This tool requires Python (tested on version 2.7 and 3.5). Python can be downloaded here: https://www.python.org/downloads/
-It is also necessary to install the wget Python module using pip. 
+
+The following Python modules are also required:
+- wget version 3.2
+- pandas version 0.23.4
+- pytest version 3.8.0 (required to run test suite)
 
 USER GUIDE
 
@@ -26,7 +30,12 @@ Option 1 should be employed when the LRG .xml file is stored locally. ‘FILEPAT
 
 Option 2 offers more flexibility. ‘X’ should be replaced with the respective LRG ID number. The tool will first check whether the LRG .xml file is present locally. If not, the tool will retrieve the LRG .xml file  from the online LRG database, save it in the current directory and commence parsing. 
 
-The output is the same for both options. The gene name and resultant BED file are printed to terminal. The BED file is also saved in the current directory as ‘gene name’.bed. 
+The output is the same for both options. The gene name and resultant BED file are printed to terminal. The BED file is also saved as ‘gene name’.bed. 
+
+The BED file save location defaults to the current directory. If another save location is preferred this can be specified using the --outpath parameter as follows:
+
+1) python LRG_Exon_Parser.py --file FILEPATH --outpath OUTPATH
+2) python LRG_Exon_Parser.py --lrg_no X --outpath OUTPATH
 
 SUPPORT
 
