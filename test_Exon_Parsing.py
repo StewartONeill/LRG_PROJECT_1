@@ -28,7 +28,7 @@ def test_file():
 	return pd.read_csv("test/C5.bed", sep='\t')
 
 # tests whether BED file is created
-def test_save():
+def test_save(test_file):
 	assert os.path.isfile("test/C5.bed")
 
 # tests whether BED file has the correct headers
