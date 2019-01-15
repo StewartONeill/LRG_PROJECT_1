@@ -23,8 +23,8 @@ USER GUIDE
 
 The tool must be provided with an LRG xml file. There are two options, both executable from the terminal:
 
-1) python LRG_Exon_Parser.py --file FILEPATH
-2) python LRG_Exon_Parser.py --lrg_no X
+1) python Exon_Parsing.py --file FILEPATH
+2) python Exon_Parsing.py --lrg_no X
 
 Option 1 should be employed when the LRG .xml file is stored locally. ‘FILEPATH’ should be replaced with the filepath of the LRG record. 
 
@@ -34,8 +34,16 @@ The output is the same for both options. The gene name and resultant BED file ar
 
 The BED file save location defaults to the current directory. If another save location is preferred this can be specified using the --outpath parameter as follows:
 
-1) python LRG_Exon_Parser.py --file FILEPATH --outpath OUTPATH
-2) python LRG_Exon_Parser.py --lrg_no X --outpath OUTPATH
+1) python Exon_Parsing.py --file FILEPATH --outpath OUTPATH
+2) python Exon_Parsing.py --lrg_no X --outpath OUTPATH
+
+TESTING
+
+Running of the test suite requires the use of the pytest module by the user. A test is executable from the terminal as follows:
+
+1) pytest
+
+This command will execute the file 'test_EXon_Parsing.py', within which 8 tests are carried out upon Exon_Parsing.py. If any errors are present, the specific failed test and associated error will be printed to the terminal. Likewise, if no errors are present and all tests pass, a summary will be printed to the terminal.
 
 SUPPORT
 
