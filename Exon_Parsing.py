@@ -35,6 +35,7 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 
 	# If an lrg no. has been given, checks whether the file exists locally.
 	# Downloads the file if no local copy is found.
+	# If XML file exists locally, this is used to create BED file.
 	if lrg_no != None and filepath == None:
 		file_name = "LRG_" + str(lrg_no) + ".xml"
 		if FileCheck(file_name) is OSError:
@@ -47,17 +48,11 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 			except:
 				print("\nHTTPError: URL does not exist.")
 				return
-	
-	'''
-	If the XML file already exists locally, 
-	a print statement will convey this to the terminal 
-	and the local XML file will be used to create the BED file.
-	'''
 		elif FileCheck(file_name) is None:
 			print("An existing local XML file has been found for this LRG no." 
 				  "\nThis local file will be used to generate the BED file")
 			file = file_name
-
+	
 	# If a filepath has been given, checks whether the file exists 
 	if filepath != None and lrg_no == None:				
 		if FileCheck(filepath) is OSError:
@@ -92,11 +87,10 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 	chr_number = mapping_element.get("other_name")
 	
 	
-	'''
-	Finds all exon elements within the fixed_annotation/transcript element.
-	Stores the chromosome number, the exon number and the start and end coordinates
-	of the exon into a list. If any item in this list is empty or missing, print an error message.
-	'''
+	
+	#Finds all exon elements within the fixed_annotation/transcript element.
+	#Stores the chromosome number, the exon number and the start and end coordinates of the exon into a list. 
+	#If any item in this list is empty or missing, print an error message.
 	for exon in root.findall("./fixed_annotation/transcript[@name='t1']/exon"):
 		coords = exon.find("coordinates")
 		exon_number = (exon.get("label"))
