@@ -27,14 +27,14 @@ def get_arguments():
 
 def lrg2bed(outpath, lrg_no=None, filepath=None):
 
-	'''Take an lrg number or a filepath and output bedfile. 
-
-		The outputted bedfile has the following columns: chromosome number, 
-		exon_number, start and stop coordinates.
+	'''
+	Take an lrg number or a filepath and output bedfile. 
+	The output BED file has the following columns: chromosome number, 
+	exon_number, start and stop coordinates.
 	'''
 
-	# If an lrg no. has been given checks whether the file exists locally
-	# Downloads the file if no local copy is found
+	# If an lrg no. has been given, checks whether the file exists locally.
+	# Downloads the file if no local copy is found.
 	if lrg_no != None and filepath == None:
 		file_name = "LRG_" + str(lrg_no) + ".xml"
 		if FileCheck(file_name) is OSError:
@@ -47,7 +47,12 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 			except:
 				print("\nHTTPError: URL does not exist.")
 				return
-
+	
+	'''
+	If the XML file already exists locally, 
+	a print statement will convey this to the terminal 
+	and the local XML file will be used to create the BED file.
+	'''
 		elif FileCheck(file_name) is None:
 			print("An existing local XML file has been found for this LRG no." 
 				  "\nThis local file will be used to generate the BED file")
@@ -66,25 +71,32 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 		print(msg)
 		return msg
 
-
 	#Read in XML file
 	tree = ET.parse(file)
 	root = tree.getroot()
-
-	#Finds all exon elements within the fixed_annotation/transcript element. 
-	#Prints the exon attribute
-	#Prints the genomic start and end coords on this exon
-
+	
 	print("Converting XML file to BED file.\n")
+	
+	#Create an array for the eventual BED file, with headings for each column.
 	bed_array = [['chromosome_number', 'exon_start', 'exon_end', 'exon_number']]
+	
+	#Select and print the gene name from the XML file.
 	symbol_element = root.find("./updatable_annotation/annotation_set"
 							   "[@type='ncbi']/features/gene/symbol")
 	gene_name = symbol_element.get("name")
+	print("Gene Name is...", gene_name)
+	
+	#Select the chromosome number of the gene.
 	mapping_element = root.find("updatable_annotation/annotation_set"
 								"[@type='lrg']/mapping")
 	chr_number = mapping_element.get("other_name")
-	print("Gene Name is...", gene_name)
-
+	
+	
+	'''
+	Finds all exon elements within the fixed_annotation/transcript element.
+	Stores the chromosome number, the exon number and the start and end coordinates
+	of the exon into a list. If any item in this list is empty or missing, print an error message.
+	'''
 	for exon in root.findall("./fixed_annotation/transcript[@name='t1']/exon"):
 		coords = exon.find("coordinates")
 		exon_number = (exon.get("label"))
@@ -106,14 +118,14 @@ def lrg2bed(outpath, lrg_no=None, filepath=None):
 	filepath = outpath + filename
 	print("\nTHE FILENAME IS..." + filename)
 
-	# save the BED file in TSV format
+	#Save the BED file in TSV format
 	with open(filepath, 'w') as tsvFile:
 		writer = csv.writer(tsvFile, delimiter='\t')
 		writer.writerows(bed_array)
 	tsvFile.close()
 	print("\n-------File " + filename + " has been created-------")
 
-	# load the BEDfile into pandas df and print to terminal
+	#Load the BED file into pandas df and print to terminal
 	df = pd.read_csv(filepath, sep='\t')
 	print(df.to_string(index=False))
 
